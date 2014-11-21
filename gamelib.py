@@ -7,6 +7,10 @@ class SimpleGame(object):
         self.title = title
         self.window_size = window_size
         self.fps = fps
+        self.is_terminated = False
+
+    def terminate(self):
+        self.is_terminated = True
 
     def _game_init(self):
         pygame.init()
@@ -17,10 +21,18 @@ class SimpleGame(object):
  
     def run(self):
         self.init()
-        while True:
+        while not self.is_terminated:
+            self.__handle_events()
             self.update()
             self.render()
             self.clock.tick(self.fps)
+
+    def __handle_events(self):
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                self.on_key_up()
+                self.on_key_down()
+                self.terminate()
  
     def init(self):
         self._game_init()
@@ -30,3 +42,9 @@ class SimpleGame(object):
  
     def render(self):
         pass
+
+    def on_key_up(self, key):
+        pass
+ 
+    def on_key_down(self, key):
+        pass 
